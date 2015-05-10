@@ -6,9 +6,7 @@ import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.POST;
 
-/**
- * Created by tl on 10.05.15.
- */
+
 public interface AuthAPI {
 
     @POST("/auth/register")

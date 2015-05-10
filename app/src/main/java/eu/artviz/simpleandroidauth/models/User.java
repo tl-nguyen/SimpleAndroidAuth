@@ -1,8 +1,6 @@
 package eu.artviz.simpleandroidauth.models;
 
-/**
- * Created by tl on 10.05.15.
- */
+
 public class User {
     private String email;
     private String password;

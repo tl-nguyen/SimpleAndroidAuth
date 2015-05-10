@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import eu.artviz.simpleandroidauth.Constants;
 import eu.artviz.simpleandroidauth.R;
 import eu.artviz.simpleandroidauth.apis.AuthAPI;
 import eu.artviz.simpleandroidauth.models.Auth;
 import eu.artviz.simpleandroidauth.models.User;
+import eu.artviz.simpleandroidauth.utils.AuthToken;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -24,7 +26,6 @@ import retrofit.mime.TypedByteArray;
 
 public class LoginFragment extends Fragment {
 
-    public static final String API_URL_ENDPOINT= "http://192.168.0.161:1337";
 
     private OnRegisterSelectedListener mCallback;
 
@@ -55,7 +56,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 RestAdapter adapter = new RestAdapter.Builder()
-                        .setEndpoint(API_URL_ENDPOINT)
+                        .setEndpoint(Constants.API_URL_ENDPOINT)
                         .build();
 
                 AuthAPI authAPI = adapter.create(AuthAPI.class);
@@ -69,14 +70,15 @@ public class LoginFragment extends Fragment {
                     public void success(Auth auth, Response response) {
                         Log.d("Test", auth.getUser().getEmail());
                         Log.d("Test", auth.getToken());
+
+                        AuthToken.setToken(getActivity(), auth.getToken());
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
+                        String errorResponseBody =  new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
                         Log.d("Test", "Error: " + error.getMessage());
-
-                        String json =  new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
-                        Log.d("Test", json.toString());
+                        Log.d("Test", errorResponseBody);
                     }
                 });
             }
