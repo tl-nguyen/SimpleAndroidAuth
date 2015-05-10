@@ -19,6 +19,7 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 
 public class LoginFragment extends Fragment {
@@ -73,6 +74,9 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void failure(RetrofitError error) {
                         Log.d("Test", "Error: " + error.getMessage());
+
+                        String json =  new String(((TypedByteArray)error.getResponse().getBody()).getBytes());
+                        Log.d("Test", json.toString());
                     }
                 });
             }
