@@ -1,7 +1,11 @@
-package eu.artviz.simpleandroidauth;
+package eu.artviz.simpleandroidauth.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
+import eu.artviz.simpleandroidauth.fragments.LoginFragment;
+import eu.artviz.simpleandroidauth.R;
+import eu.artviz.simpleandroidauth.fragments.RegisterFragment;
 
 
 public class AuthActivity extends ActionBarActivity implements LoginFragment.OnRegisterSelectedListener, RegisterFragment.OnCancelSelectedListener {

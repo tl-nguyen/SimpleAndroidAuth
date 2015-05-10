@@ -1,4 +1,4 @@
-package eu.artviz.simpleandroidauth;
+package eu.artviz.simpleandroidauth.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,11 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import eu.artviz.simpleandroidauth.R;
+
 
 public class RegisterFragment extends Fragment {
 
-
-    OnCancelSelectedListener mCallback;
+    private OnCancelSelectedListener mCallback;
 
     public RegisterFragment() {
     }
