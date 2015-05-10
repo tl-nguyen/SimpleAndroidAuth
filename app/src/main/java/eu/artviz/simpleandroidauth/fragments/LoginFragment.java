@@ -1,6 +1,7 @@
 package eu.artviz.simpleandroidauth.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,10 +14,12 @@ import android.widget.TextView;
 
 import eu.artviz.simpleandroidauth.Constants;
 import eu.artviz.simpleandroidauth.R;
+import eu.artviz.simpleandroidauth.activities.MainActivity;
 import eu.artviz.simpleandroidauth.apis.AuthAPI;
 import eu.artviz.simpleandroidauth.models.Auth;
 import eu.artviz.simpleandroidauth.models.User;
 import eu.artviz.simpleandroidauth.utils.AuthToken;
+import eu.artviz.simpleandroidauth.utils.CachedDb;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -26,8 +29,8 @@ import retrofit.mime.TypedByteArray;
 
 public class LoginFragment extends Fragment {
 
-
     private OnRegisterSelectedListener mCallback;
+    private CachedDb mCachedDb;
 
     public LoginFragment() {
     }
@@ -36,6 +39,8 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+
+        mCachedDb = CachedDb.getInstance();
 
         final EditText etEmail = (EditText) rootView.findViewById(R.id.etEmail);
         final EditText etPassword = (EditText) rootView.findViewById(R.id.etPassword);
@@ -68,10 +73,12 @@ public class LoginFragment extends Fragment {
                 authAPI.login(user , new Callback<Auth>() {
                     @Override
                     public void success(Auth auth, Response response) {
-                        Log.d("Test", auth.getUser().getEmail());
-                        Log.d("Test", auth.getToken());
+                        mCachedDb.setAuthToken(new AuthToken(getActivity()));
+                        mCachedDb.setToken(auth.getToken());
+                        mCachedDb.setCurrentUser(auth.getUser());
 
-                        AuthToken.setToken(getActivity(), auth.getToken());
+                        Intent mainIntent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(mainIntent);
                     }
 
                     @Override

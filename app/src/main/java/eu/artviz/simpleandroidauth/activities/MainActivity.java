@@ -7,17 +7,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import eu.artviz.simpleandroidauth.R;
+import eu.artviz.simpleandroidauth.utils.AuthToken;
+import eu.artviz.simpleandroidauth.utils.CachedDb;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private CachedDb mCachedDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent loginIntent = new Intent(this, AuthActivity.class);
-        startActivity(loginIntent);
+        mCachedDb = CachedDb.getInstance();
+        mCachedDb.setAuthToken(new AuthToken(getApplicationContext()));
+
+        if (mCachedDb.getToken() == null) {
+            Intent loginIntent = new Intent(this, AuthActivity.class);
+            startActivity(loginIntent);
+            finish();
+        }
+
+        if (mCachedDb.getCurrentUser() == null) {
+            // TODO: Fetch current user
+        }
+
     }
 
     @Override
