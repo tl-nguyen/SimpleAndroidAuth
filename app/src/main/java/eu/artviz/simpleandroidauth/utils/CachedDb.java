@@ -11,7 +11,6 @@ public class CachedDb {
     private User currentUser;
     private String token;
 
-
     private CachedDb() {
     }
 
@@ -32,6 +31,10 @@ public class CachedDb {
     }
 
     public String getToken() {
+        if (authToken == null) {
+            throw new NullPointerException("You have to set authToken before getting the token");
+        }
+
         if (token == null) {
             token = authToken.getToken();
         }
@@ -40,6 +43,10 @@ public class CachedDb {
     }
 
     public void setToken(String token) {
+        if (authToken == null) {
+            throw new NullPointerException("You have to set authToken before setting the token");
+        }
+
         this.authToken.setToken(token);
 
         this.token = token;
