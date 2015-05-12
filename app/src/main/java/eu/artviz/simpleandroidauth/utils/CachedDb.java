@@ -1,5 +1,7 @@
 package eu.artviz.simpleandroidauth.utils;
 
+import android.content.Context;
+
 import eu.artviz.simpleandroidauth.models.User;
 
 
@@ -14,7 +16,7 @@ public class CachedDb {
     private CachedDb() {
     }
 
-    public static CachedDb getInstance() {
+    public static CachedDb getInstance(Context context) {
         if (instance == null) {
             synchronized (CachedDb.class) {
                 if (instance == null) {
@@ -23,10 +25,12 @@ public class CachedDb {
             }
         }
 
+        instance.setAuthToken(new AuthToken(context));
+
         return instance;
     }
 
-    public void setAuthToken(AuthToken authToken) {
+    private void setAuthToken(AuthToken authToken) {
         this.authToken = authToken;
     }
 

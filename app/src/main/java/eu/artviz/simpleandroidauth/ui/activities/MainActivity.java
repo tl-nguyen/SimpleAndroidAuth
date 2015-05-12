@@ -1,4 +1,4 @@
-package eu.artviz.simpleandroidauth.activities;
+package eu.artviz.simpleandroidauth.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import eu.artviz.simpleandroidauth.R;
-import eu.artviz.simpleandroidauth.utils.AuthToken;
 import eu.artviz.simpleandroidauth.utils.CachedDb;
-
 
 public class MainActivity extends ActionBarActivity {
 
@@ -20,10 +18,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mCachedDb = CachedDb.getInstance();
-        mCachedDb.setAuthToken(new AuthToken(getApplicationContext()));
+        mCachedDb = CachedDb.getInstance(this);
 
-        if (mCachedDb.getToken() == null) {
+        String token = mCachedDb.getToken();
+
+        if (token == null || token.isEmpty()) {
             Intent loginIntent = new Intent(this, AuthActivity.class);
             startActivity(loginIntent);
             finish();
@@ -51,6 +50,12 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            mCachedDb.setToken(null);
+
+            Intent authIntent = new Intent(this, AuthActivity.class);
+            startActivity(authIntent);
+
             return true;
         }
 

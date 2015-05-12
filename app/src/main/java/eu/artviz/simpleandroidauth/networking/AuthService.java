@@ -1,4 +1,4 @@
-package eu.artviz.simpleandroidauth.apis;
+package eu.artviz.simpleandroidauth.networking;
 
 import eu.artviz.simpleandroidauth.models.Auth;
 import eu.artviz.simpleandroidauth.models.User;
@@ -7,7 +7,7 @@ import retrofit.http.Body;
 import retrofit.http.POST;
 
 
-public interface AuthAPI {
+public interface AuthService {
 
     @POST("/auth/register")
     void register(@Body User user, Callback<Auth> response);
