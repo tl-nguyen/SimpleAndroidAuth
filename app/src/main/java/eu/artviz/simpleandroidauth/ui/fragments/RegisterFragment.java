@@ -1,24 +1,20 @@
 package eu.artviz.simpleandroidauth.ui.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import eu.artviz.simpleandroidauth.R;
 import eu.artviz.simpleandroidauth.models.Auth;
 import eu.artviz.simpleandroidauth.models.User;
+import eu.artviz.simpleandroidauth.navigation.NavigationEvent;
 import eu.artviz.simpleandroidauth.networking.AuthService;
 import eu.artviz.simpleandroidauth.networking.RestServiceCreator;
 import eu.artviz.simpleandroidauth.ui.activities.MainActivity;
+import eu.artviz.simpleandroidauth.utils.BusProvider;
 import eu.artviz.simpleandroidauth.utils.CachedDb;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -26,10 +22,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 
-public class RegisterFragment extends Fragment {
-
-    private OnCancelSelectedListener mCallback;
-
+public class RegisterFragment extends BaseFragment {
     CachedDb mCachedDb;
 
     @InjectView(R.id.etEmail)
@@ -48,12 +41,12 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_register, container, false);
+    protected int getLayoutId() {
+        return R.layout.fragment_register;
+    }
 
-        ButterKnife.inject(this, rootView);
-
+    @Override
+    protected void initUI() {
         mCachedDb = CachedDb.getInstance(getActivity());
 
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
@@ -90,26 +83,8 @@ public class RegisterFragment extends Fragment {
         mBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onCancelSelected();
+                BusProvider.getInstance().post(new NavigationEvent(new LoginFragment(), R.id.container));
             }
         });
-
-        return rootView;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            mCallback = (OnCancelSelectedListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnCancelSelectedListener");
-        }
-    }
-
-    public interface OnCancelSelectedListener {
-        void onCancelSelected();
     }
 }

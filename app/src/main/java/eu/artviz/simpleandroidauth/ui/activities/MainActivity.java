@@ -2,7 +2,6 @@ package eu.artviz.simpleandroidauth.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +18,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     private CachedDb mCachedDb;
 
@@ -29,7 +28,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         ButterKnife.inject(this);
 
@@ -62,6 +60,11 @@ public class MainActivity extends ActionBarActivity {
             mTvWelcome.setText(mCachedDb.getCurrentUser().getEmail());
         }
 
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     @Override
