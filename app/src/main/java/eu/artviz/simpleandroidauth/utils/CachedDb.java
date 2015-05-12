@@ -25,7 +25,9 @@ public class CachedDb {
             }
         }
 
-        instance.setAuthToken(new AuthToken(context));
+        if (context != null) {
+            instance.setAuthToken(new AuthToken(context));
+        }
 
         return instance;
     }
@@ -36,7 +38,7 @@ public class CachedDb {
 
     public String getToken() {
         if (authToken == null) {
-            throw new NullPointerException("You have to set authToken before getting the token");
+            return "";
         }
 
         if (token == null) {

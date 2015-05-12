@@ -3,20 +3,35 @@ package eu.artviz.simpleandroidauth.ui.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import eu.artviz.simpleandroidauth.R;
+import eu.artviz.simpleandroidauth.models.User;
+import eu.artviz.simpleandroidauth.networking.RestServiceCreator;
+import eu.artviz.simpleandroidauth.networking.UserService;
 import eu.artviz.simpleandroidauth.utils.CachedDb;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends ActionBarActivity {
 
     private CachedDb mCachedDb;
 
+    @InjectView(R.id.tvWelcome)
+    TextView mTvWelcome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.inject(this);
 
         mCachedDb = CachedDb.getInstance(this);
 
@@ -29,7 +44,22 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if (mCachedDb.getCurrentUser() == null) {
-            // TODO: Fetch current user
+
+            UserService userService = RestServiceCreator.createUserService();
+
+            userService.getCurrentUser(new Callback<User>() {
+                @Override
+                public void success(User user, Response response) {
+                    mTvWelcome.setText(user.getEmail());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Log.d("Test", "Error: " + error.getMessage());
+                }
+            });
+        } else {
+            mTvWelcome.setText(mCachedDb.getCurrentUser().getEmail());
         }
 
     }

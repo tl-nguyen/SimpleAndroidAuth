@@ -6,6 +6,6 @@ import retrofit.Callback;
 import retrofit.http.POST;
 
 public interface UserService {
-    @POST("/auth/register")
+    @POST("/user/current")
     void getCurrentUser(Callback<User> response);
 }
