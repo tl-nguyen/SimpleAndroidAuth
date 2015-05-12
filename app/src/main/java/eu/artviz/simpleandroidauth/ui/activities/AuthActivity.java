@@ -15,10 +15,7 @@ public class AuthActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, new LoginFragment())
-                .addToBackStack(null)
-                .commit();
+        onNavigationEvent(new NavigationEvent(new LoginFragment(), R.id.container));
     }
 
     @Override
